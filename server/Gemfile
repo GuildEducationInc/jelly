@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+gem 'activesupport', '5.2.3'
+gem 'graphql', '1.9.9'
+gem 'puma', '4.0.1'
+gem 'redis', '4.1.2'
+gem 'sinatra', '2.0.5'
+gem 'sinatra-contrib', '2.0.5'
+
+group :development do
+  gem 'rubocop'
+end
+
+group :test do
+  gem 'rspec'
+end
+
+group :development, :test do
+  gem 'pry-byebug'
+end
