@@ -7,21 +7,19 @@ module Donut
   module Services
     module Talks
       class Find < ::Donut::Services::Base
-        SCRIPT = <<~LUA
-          if redis.call("EXISTS", ARGV[1] .. ARGV[2]) == 1 then
-            local record = redis.call("GET", ARGV[1] .. ARGV[2])
-            local score = redis.call("ZSCORE", ARGV[1] .. "all", ARGV[2])
-            return { record, score }
-          else
-            return nil
-          end
-        LUA
-
         def call(id)
-          raw = redis.eval SCRIPT, [], ["#{NAMESPACE}:", id]
-          return nil unless raw.present?
+          return nil unless redis.exists(key(id))
 
-          JSON.parse(raw[0]).with_indifferent_access.merge votes: raw[1].to_f
+          raw = redis.get key(id)
+          obj = JSON.parse(raw).with_indifferent_access
+          votes = redis.zscore "#{NAMESPACE}:all", id
+          success obj.merge(votes: votes)
+        end
+
+        private
+
+        def key(id)
+          "#{NAMESPACE}:#{id}"
         end
       end
     end

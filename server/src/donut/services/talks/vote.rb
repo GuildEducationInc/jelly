@@ -7,14 +7,23 @@ module Donut
     module Talks
       class Vote < ::Donut::Services::Base
         def call(id:, direction:)
-          success vote!(id, direction)
+          vote! id, direction
+          services[:find].call id
         rescue StandardError => e
           failure [e.message]
         end
 
         private
 
-        def vote!(id, direction); end
+        def vote!(id, direction)
+          redis.zincrby "#{NAMESPACE}:all", direction, id
+        end
+
+        def services
+          {
+            find: ::Donut::Services::Talks::Find
+          }
+        end
       end
     end
   end

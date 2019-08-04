@@ -7,19 +7,25 @@ module Donut
   module Services
     module Talks
       class Query < ::Donut::Services::Base
-        SCRIPT = <<~LUA
-          local ids = redis.call("ZREVRANGEBYSCORE", ARGV[1] .. ":all", 0, -1)
-          for i, id in ipairs(ids) do ids[i] = ARGV[1] .. ":" .. id end
-          return redis.call("MGET", unpack(ids))
-        LUA
+        KEY = "#{NAMESPACE}:all"
 
         def call
-          raw = redis.eval(SCRIPT, [], [NAMESPACE]).compact
-          records = raw.map do |record|
-            JSON.parse(record).with_indifferent_access
+          ids = redis.zrevrangebyscore(KEY, '+inf', '-inf', withscores: true)
+          hash = ids.to_h.transform_keys { |id| key id }
+          return success([]) if hash.compact.empty?
+
+          records = redis.mget(hash.keys).map do |record|
+            obj = JSON.parse(record).with_indifferent_access
+            obj.merge votes: hash[key obj[:id]]
           end
 
-          success records
+          success records.compact
+        end
+
+        private
+
+        def key(id)
+          "#{NAMESPACE}:#{id}"
         end
       end
     end

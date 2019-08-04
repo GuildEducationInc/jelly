@@ -17,10 +17,10 @@ module Donut
 
         def create_talk!(topic:)
           id = services[:generate_id].call.value
-          args = { topic: topic, id: id, __namespace: NAMESPACE }
+          args = { topic: topic, id: id, __namespace: NAMESPACE, votes: 0.0 }
 
           redis.multi do |txn|
-            txn.set("#{NAMESPACE}:#{id}", args.to_json)
+            txn.set "#{NAMESPACE}:#{id}", args.to_json
             txn.zadd "#{NAMESPACE}:all", 0.0, id
           end
 

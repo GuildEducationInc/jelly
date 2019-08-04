@@ -28,7 +28,10 @@ module Donut
             nsp, id = uri.path.split('/')[1..-1]
             raise(InvalidNamespaceError, nsp) unless FINDERS.key?(nsp.to_sym)
 
-            FINDERS[nsp.to_sym].call id
+            result = FINDERS[nsp.to_sym].call id
+            return nil unless result.success?
+
+            result.value
           end
         end
       end
