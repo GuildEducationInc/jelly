@@ -6,9 +6,10 @@ module Donut
   module Services
     module Talks
       class Vote < ::Donut::Services::Base
+        SCRIPT = File.read File.join(__dir__, 'vote.lua')
+
         def call(id:, direction:)
-          vote! id, direction
-          services[:find].call id
+          success vote!(id, direction)
         rescue StandardError => e
           failure [e.message]
         end
@@ -16,13 +17,9 @@ module Donut
         private
 
         def vote!(id, direction)
-          redis.zincrby "#{NAMESPACE}:all", direction, id
-        end
-
-        def services
-          {
-            find: ::Donut::Services::Talks::Find
-          }
+          raw, score = redis.eval SCRIPT, [NAMESPACE, id], [direction]
+          obj = JSON.parse(raw).with_indifferent_access
+          obj.merge votes: score
         end
       end
     end

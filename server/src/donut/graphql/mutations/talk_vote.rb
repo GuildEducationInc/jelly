@@ -10,7 +10,7 @@ module Donut
         argument :id, ID, required: true
         argument :direction, ::Donut::GraphQL::Types::Direction, required: true
 
-        field :talk, ::Donut::GraphQL::Types::Talk, null: false
+        field :talk, ::Donut::GraphQL::Types::Talk, null: true
         field :errors, [String], null: false
 
         def resolve(id:, direction:)
