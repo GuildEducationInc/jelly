@@ -15,6 +15,7 @@ const talkVoteMutation = gql`
         gid
         topic
         votes
+        description
       }
       errors
     }
@@ -29,9 +30,9 @@ const Talk = ({ talk }) => {
       <Row>
         <Col
           xs={1}
-          className="text-center d-flex flex-column justify-content-center"
+          className="pl-4 text-center d-flex flex-column justify-content-center"
         >
-          <strong className="text-gray">{votes}</strong>
+          <strong className="font-weight-bold text-gray">{votes}</strong>
         </Col>
         <Col
           xs={1}
@@ -66,7 +67,7 @@ const Talk = ({ talk }) => {
             )}
           </Mutation>
         </Col>
-        <Col className="d-flex flex-column justify-content-center">
+        <Col xs={6} className="d-flex flex-column justify-content-center">
           <h6 className="my-0 font-weight-bold">{topic}</h6>
           <small className="text-muted">{description}</small>
         </Col>

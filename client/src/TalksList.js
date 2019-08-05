@@ -1,14 +1,21 @@
 import React from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Talk from "./Talk";
-import { map, sortBy } from "lodash";
+import { map, isEmpty } from "lodash";
 
 const TalksList = ({ talks }) => {
-  const list = map(sortBy(talks, ({ votes }) => -votes), talk => (
-    <Talk talk={talk} key={talk.id} />
-  ));
-
-  return <ListGroup as="ul">{list}</ListGroup>;
+  if (isEmpty(talks)) {
+    return (
+      <ListGroup as="ul">
+        <ListGroup.Item as="li" className="border-0 px-2 bg-transparent">
+          <small className="text-muted">No talks</small>
+        </ListGroup.Item>
+      </ListGroup>
+    );
+  } else {
+    const list = map(talks, talk => <Talk talk={talk} key={talk.id} />);
+    return <ListGroup as="ul">{list}</ListGroup>;
+  }
 };
 
 export default TalksList;

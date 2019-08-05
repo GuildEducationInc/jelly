@@ -7,6 +7,7 @@ module Donut
     module Mutations
       class TalkCreate < ::GraphQL::Schema::RelayClassicMutation
         argument :topic, String, required: true
+        argument :description, String, required: true
 
         field :talk, ::Donut::GraphQL::Types::Talk, null: true
         field :errors, [String], null: false
