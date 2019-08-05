@@ -11,6 +11,7 @@ gem 'puma', '4.0.1'
 gem 'redis', '4.1.2'
 gem 'sinatra', '2.0.5'
 gem 'sinatra-contrib', '2.0.5'
+gem 'sinatra-cross_origin', '0.4.0'
 
 group :development do
   gem 'rubocop'
