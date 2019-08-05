@@ -69,7 +69,7 @@ const Talk = ({ talk }) => {
           </Mutation>
         </Col>
         <Col xs={6} className="d-flex flex-column justify-content-center">
-          <h6 className="my-0 mb-1 font-weight-bold">{topic}</h6>
+          <h6 className="my-0 font-weight-bold">{topic}</h6>
           <small className="text-muted">{description}</small>
         </Col>
       </Row>
