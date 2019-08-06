@@ -1,0 +1,16 @@
+mutation SessionCreate($googleIdToken: String!) {
+  sessionCreate(input: { googleIdToken: $googleIdToken }) {
+    token {
+      accessToken
+      tokenType
+      expiresIn
+      refreshToken
+    }
+    user {
+      id
+      gid
+      profilePictureUrl
+    }
+    errors
+  }
+}

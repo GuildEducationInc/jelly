@@ -4,25 +4,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import IosThumbsUpOutline from "react-ionicons/lib/IosThumbsUpOutline";
-import { gql } from "apollo-boost";
 import { Mutation } from "react-apollo";
+import { loader } from "graphql.macro";
 
-const talkVoteMutation = gql`
-  mutation TalkVote($id: ID!, $direction: Direction!) {
-    talkVote(input: { id: $id, direction: $direction }) {
-      talk {
-        id
-        gid
-        topic
-        votes
-        description
-      }
-      errors
-    }
-  }
-`;
+const talkVoteMutation = loader("./graphql/mutations/TalkVote.graphql");
 
-const Talk = ({ talk }) => {
+export default ({ talk }) => {
   const { id, votes, topic, gid, description } = talk;
 
   return (
@@ -76,5 +63,3 @@ const Talk = ({ talk }) => {
     </ListGroup.Item>
   );
 };
-
-export default Talk;

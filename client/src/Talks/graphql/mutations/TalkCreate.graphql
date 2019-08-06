@@ -1,0 +1,12 @@
+mutation TalkCreate($topic: String!, $description: String!) {
+  talkCreate(input: { topic: $topic, description: $description }) {
+    talk {
+      id
+      gid
+      topic
+      votes
+      description
+    }
+    errors
+  }
+}

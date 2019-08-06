@@ -1,25 +1,32 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { gql } from "apollo-boost";
-import TalksList from "./TalksList";
+import List from "./List";
 import { filter, sortBy, isEmpty } from "lodash";
 import moment from "moment";
+import { loader } from "graphql.macro";
 
-export const talksQuery = gql`
-  query Talks {
-    talks {
-      nodes {
-        id
-        gid
-        topic
-        description
-        votes
-      }
-    }
-  }
-`;
+export const talksQuery = loader("./graphql/queries/Talks.graphql");
 
-const Talks = () => (
+function chunk(talks) {
+  const upcoming = sortBy(
+    filter(talks, ({ scheduledFor }) => moment(scheduledFor).isAfter()),
+    "scheduledFor"
+  );
+
+  const past = sortBy(
+    filter(talks, ({ scheduledFor }) => moment(scheduledFor).isBefore()),
+    "scheduledFor"
+  );
+
+  const backlog = sortBy(
+    filter(talks, ({ scheduledFor }) => isEmpty(scheduledFor)),
+    ({ votes }) => -votes
+  );
+
+  return { upcoming, past, backlog };
+}
+
+export default () => (
   <Query query={talksQuery}>
     {({ loading, error, data }) => {
       if (loading) return <div className="loader">Loading...</div>;
@@ -29,20 +36,7 @@ const Talks = () => (
         talks: { nodes: talks }
       } = data;
 
-      const upcoming = sortBy(
-        filter(talks, ({ scheduledFor }) => moment(scheduledFor).isAfter()),
-        "scheduledFor"
-      );
-
-      const past = sortBy(
-        filter(talks, ({ scheduledFor }) => moment(scheduledFor).isBefore()),
-        "scheduledFor"
-      );
-
-      const backlog = sortBy(
-        filter(talks, ({ scheduledFor }) => isEmpty(scheduledFor)),
-        ({ votes }) => -votes
-      );
+      const { upcoming, past, backlog } = chunk(talks);
 
       return (
         <>
@@ -51,13 +45,13 @@ const Talks = () => (
           ) : (
             <section className="mb-4">
               <h2 className="h6 text-muted ml-2">Upcoming</h2>
-              <TalksList talks={upcoming} />
+              <List talks={upcoming} />
             </section>
           )}
 
           <section className="mb-4">
             <h2 className="h6 text-muted ml-2">Backlog</h2>
-            <TalksList talks={backlog} />
+            <List talks={backlog} />
           </section>
 
           {isEmpty(past) ? (
@@ -65,7 +59,7 @@ const Talks = () => (
           ) : (
             <section>
               <h2 className="h6 text-muted ml-2">Past</h2>
-              <TalksList talks={past} />
+              <List talks={past} />
             </section>
           )}
         </>
@@ -73,5 +67,3 @@ const Talks = () => (
     }}
   </Query>
 );
-
-export default Talks;

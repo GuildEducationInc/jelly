@@ -5,15 +5,15 @@ require_relative '../base'
 
 module Donut
   module Services
-    module Talks
+    module Users
       class Find < ::Donut::Services::Base
-        def call(id)
-          return success(nil) unless redis.exists(key(id))
+        def call(auth_token:)
+          id = redis.get "auth:token:#{auth_token}"
+          return success(nil) unless id && redis.exists(key(id))
 
           raw = redis.get key(id)
           obj = JSON.parse(raw).with_indifferent_access
-          votes = redis.zscore "#{NAMESPACE}:all", id
-          success obj.merge(votes: votes)
+          success obj
         end
 
         private

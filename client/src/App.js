@@ -1,25 +1,52 @@
 import React, { Component } from "react";
-import ApolloClient from "apollo-boost";
+import ApolloClient from "apollo-client";
+import { createHttpLink } from "apollo-link-http";
 import { ApolloProvider } from "react-apollo";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { setContext } from "apollo-link-context";
 import Container from "react-bootstrap/Container";
-import Talks from "./Talks";
-import logo from "./images/logo.svg";
+import Talks from "./Talks/Index";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import Navbar from "react-bootstrap/Navbar";
-import Alert from "react-bootstrap/Alert";
-import NewTalk from "./NewTalk";
+import NewTalk from "./Talks/New";
+import Navbar from "./Navbar";
+import { loader } from "graphql.macro";
+
+const sessionCreateMutation = loader(
+  "./App/graphql/mutations/SessionCreate.graphql"
+);
+
+const httpLink = createHttpLink({
+  uri: "http://localhost:4567/graphql"
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return { headers };
+  }
+
+  const { accessToken, tokenType } = JSON.parse(token);
+
+  return {
+    headers: {
+      ...headers,
+      authorization: `${tokenType} ${accessToken}`
+    }
+  };
+});
 
 const client = new ApolloClient({
-  uri: "http://localhost:4567/graphql"
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
 });
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { session: { currentUser: null, isAuthenticated: false } };
+    this.state = { session: null };
   }
 
   componentDidMount() {
@@ -34,13 +61,32 @@ class App extends Component {
     });
   }
 
-  onSignIn(currentUser) {
-    this.setState({ isAuthenticated: true, currentUser });
+  async onSignIn(googleUser) {
+    const googleIdToken = googleUser.getAuthResponse().id_token;
+    const res = await client.mutate({
+      mutation: sessionCreateMutation,
+      variables: { googleIdToken }
+    });
+
+    const {
+      data: { sessionCreate: session }
+    } = res;
+    const { errors } = session;
+
+    if (errors.length) {
+      localStorage.removeItem("token");
+      this.setState({ session: null });
+      alert("unable to authenticate");
+      return;
+    }
+
+    localStorage.setItem("token", JSON.stringify(session.token));
+    this.setState({ session });
   }
 
   render() {
     const {
-      state: { isAuthenticated }
+      state: { session }
     } = this;
 
     const app = (
@@ -67,42 +113,16 @@ class App extends Component {
 
     return (
       <ApolloProvider client={client}>
-        <Navbar bg="white" expand="lg" className="shadow-sm">
-          <Container>
-            <Navbar.Brand href="#" className="mr-auto">
-              <img
-                src={logo}
-                alt="logo"
-                className="d-inline-block align-top"
-                height="30"
-              />
-            </Navbar.Brand>
-            <Navbar.Brand href="#">
-              {isAuthenticated ? (
-                <Image
-                  src={this.state.currentUser.getBasicProfile().getImageUrl()}
-                  roundedCircle={true}
-                  alt="avatar"
-                  className="d-inline-block align-top"
-                  height="30"
-                />
-              ) : (
-                <div className="d-flex justify-content-center py-0 my-0">
-                  <div id="g-signin2" className="d-inline-block" />
-                </div>
-              )}
-            </Navbar.Brand>
+        {session ? (
+          <>
+            <Navbar profilePictureUrl={session.user.profilePictureUrl} />
+            <Container className="pt-4">{app}</Container>
+          </>
+        ) : (
+          <Container className="d-flex justify-content-center mt-5">
+            <div id="g-signin2" />
           </Container>
-        </Navbar>
-        <Container className="pt-4">
-          {isAuthenticated ? (
-            app
-          ) : (
-            <Alert variant="primary" className="text-center">
-              Please sign in to get started
-            </Alert>
-          )}
-        </Container>
+        )}
       </ApolloProvider>
     );
   }

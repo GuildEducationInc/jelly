@@ -1,27 +1,14 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { gql } from "apollo-boost";
 import { Mutation } from "react-apollo";
 import uuidv4 from "uuid/v4";
-import { talksQuery } from "./Talks";
+import { talksQuery } from "./Index";
+import { loader } from "graphql.macro";
 
-const talkCreateMutation = gql`
-  mutation TalkCreate($topic: String!, $description: String!) {
-    talkCreate(input: { topic: $topic, description: $description }) {
-      talk {
-        id
-        gid
-        topic
-        votes
-        description
-      }
-      errors
-    }
-  }
-`;
+const talkCreateMutation = loader("./graphql/mutations/TalkCreate.graphql");
 
-const NewTalk = () => {
+export default () => {
   let topicInput, descriptionInput;
 
   return (
@@ -109,5 +96,3 @@ const NewTalk = () => {
     </Mutation>
   );
 };
-
-export default NewTalk;

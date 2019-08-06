@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './graphql/schema'
+require_relative './services/users/find'
 
 module Donut
   class App < ::Sinatra::Base
@@ -9,6 +10,26 @@ module Donut
       set :bind, '0.0.0.0'
       enable :logging
       enable :cross_origin
+    end
+
+    helpers do
+      def current_user
+        @current_user ||= load_current_user
+      end
+
+      def load_current_user
+        header = request.env['HTTP_AUTHORIZATION']
+        return unless header.present?
+        type, token = header.split ' '
+        return unless type == 'Bearer' && token.present?
+        services[:find_user].call(auth_token: token).value
+      end
+
+      def services
+        {
+          find_user: ::Donut::Services::Users::Find
+        }
+      end
     end
 
     before do
@@ -23,9 +44,11 @@ module Donut
 
     post '/graphql' do
       body = JSON.parse request.body.read
+
       result = ::Donut::GraphQL::Schema.execute(
         body['query'],
-        variables: body['variables']
+        variables: body['variables'],
+        context: { current_user: current_user }
       )
 
       [200, json(result)]

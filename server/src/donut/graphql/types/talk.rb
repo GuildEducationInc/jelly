@@ -6,7 +6,7 @@ module Donut
   module GraphQL
     module Types
       class Talk < ::Donut::GraphQL::Types::Node
-        field :topic, String, null: true
+        field :topic, String, null: false
         field :description, String, null: false
         field :votes, Integer, null: false
       end

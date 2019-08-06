@@ -1,0 +1,12 @@
+mutation TalkVote($id: ID!, $direction: Direction!) {
+  talkVote(input: { id: $id, direction: $direction }) {
+    talk {
+      id
+      gid
+      topic
+      votes
+      description
+    }
+    errors
+  }
+}

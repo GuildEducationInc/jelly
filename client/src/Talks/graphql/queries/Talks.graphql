@@ -1,0 +1,11 @@
+query Talks {
+  talks {
+    nodes {
+      id
+      gid
+      topic
+      description
+      votes
+    }
+  }
+}

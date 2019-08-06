@@ -1,9 +1,9 @@
 import React from "react";
 import ListGroup from "react-bootstrap/ListGroup";
-import Talk from "./Talk";
+import Talk from "./Show";
 import { map, isEmpty } from "lodash";
 
-const TalksList = ({ talks }) => {
+export default ({ talks }) => {
   if (isEmpty(talks)) {
     return (
       <ListGroup as="ul">
@@ -17,5 +17,3 @@ const TalksList = ({ talks }) => {
     return <ListGroup as="ul">{list}</ListGroup>;
   }
 };
-
-export default TalksList;

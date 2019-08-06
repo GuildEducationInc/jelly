@@ -6,6 +6,7 @@ ruby '2.6.3'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem 'activesupport', '5.2.3'
+gem 'google-id-token', '1.4.2'
 gem 'graphql', '1.9.9'
 gem 'puma', '4.0.1'
 gem 'redis', '4.1.2'
