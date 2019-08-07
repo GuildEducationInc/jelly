@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './graphql/schema'
-require_relative './services/users/find'
+require_relative './services/users/current'
 
 module Donut
   class App < ::Sinatra::Base
@@ -14,21 +14,7 @@ module Donut
 
     helpers do
       def current_user
-        @current_user ||= load_current_user
-      end
-
-      def load_current_user
-        header = request.env['HTTP_AUTHORIZATION']
-        return unless header.present?
-        type, token = header.split ' '
-        return unless type == 'Bearer' && token.present?
-        services[:find_user].call(auth_token: token).value
-      end
-
-      def services
-        {
-          find_user: ::Donut::Services::Users::Find
-        }
+        @current_user ||= ::Donut::Services::Users::Current.call request
       end
     end
 

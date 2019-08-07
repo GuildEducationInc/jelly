@@ -13,8 +13,12 @@ module Donut
         field :errors, [String], null: false
 
         def resolve(params = {})
-          result = services[:create].call params
+          result = services[:create].call params.merge(
+            submitted_by: context.dig(:current_user, :id)
+          )
+
           value = result.value
+
           return { talk: value, errors: [] } if result.success?
 
           { errors: value }

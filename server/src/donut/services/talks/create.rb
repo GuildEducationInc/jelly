@@ -15,13 +15,14 @@ module Donut
 
         private
 
-        def create_talk!(topic:, description:)
+        def create_talk!(topic:, description:, submitted_by:)
           id = services[:generate_id].call.value
           votes = 0.0
 
           args = {
             topic: topic,
             description: description,
+            submitted_by: submitted_by,
             id: id,
             __namespace: NAMESPACE
           }

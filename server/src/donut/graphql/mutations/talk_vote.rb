@@ -14,8 +14,14 @@ module Donut
         field :errors, [String], null: false
 
         def resolve(id:, direction:)
-          result = services[:vote].call id: id, direction: direction
+          result = services[:vote].call(
+            id: id,
+            direction: direction,
+            voter_id: context.dig(:current_user, :id)
+          )
+
           value = result.value
+
           return { talk: value, errors: [] } if result.success?
 
           { errors: value }

@@ -71,6 +71,7 @@ export default () => {
             <Form.Control
               type="text"
               placeholder="Topic"
+              required={true}
               ref={node => {
                 topicInput = node;
               }}
@@ -82,6 +83,7 @@ export default () => {
               as="textarea"
               rows="3"
               type="text"
+              required={true}
               placeholder="Description"
               ref={node => {
                 descriptionInput = node;
