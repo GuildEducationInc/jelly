@@ -20,7 +20,7 @@ function chunk(talks) {
 
   const backlog = sortBy(
     filter(talks, ({ scheduledFor }) => isEmpty(scheduledFor)),
-    ({ votes }) => -votes
+    ({ votesCount }) => -votesCount
   );
 
   return { upcoming, past, backlog };
