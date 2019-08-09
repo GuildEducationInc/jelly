@@ -1,0 +1,9 @@
+#import "../fragments/Talk.graphql"
+
+query Talks {
+  talks {
+    nodes {
+      ...TalkFragment
+    }
+  }
+}

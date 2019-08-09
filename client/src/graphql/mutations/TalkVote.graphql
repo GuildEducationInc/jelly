@@ -1,0 +1,10 @@
+#import "../fragments/Talk.graphql"
+
+mutation TalkVote($id: ID!, $direction: Direction!) {
+  talkVote(input: { id: $id, direction: $direction }) {
+    talk {
+      ...TalkFragment
+    }
+    errors
+  }
+}

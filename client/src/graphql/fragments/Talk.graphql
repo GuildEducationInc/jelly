@@ -1,0 +1,8 @@
+fragment TalkFragment on Talk {
+  id
+  gid
+  topic
+  votesCount
+  description
+  voterIds
+}
