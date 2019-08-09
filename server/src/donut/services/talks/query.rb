@@ -27,7 +27,10 @@ module Donut
         def load_records(hash)
           records = redis.mget(hash.keys).map do |record|
             obj = JSON.parse(record).with_indifferent_access
-            obj.merge votes: hash[key obj[:id]]
+            obj.merge(
+              votes_count: hash[key obj[:id]],
+              voter_ids: redis.smembers("#{key obj[:id]}:voter_ids")
+            )
           end
 
           records.compact

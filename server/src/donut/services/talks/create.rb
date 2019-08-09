@@ -32,7 +32,7 @@ module Donut
             txn.zadd "#{NAMESPACE}:all", votes, id
           end
 
-          args.merge votes: votes
+          args.merge votes_count: votes, voter_ids: []
         end
 
         def services

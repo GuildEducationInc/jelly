@@ -17,9 +17,14 @@ module Donut
         private
 
         def vote!(id, direction, voter_id)
-          raw, score = redis.eval SCRIPT, [NAMESPACE, id, voter_id], [direction]
+          raw, score, voter_ids = redis.eval(
+            SCRIPT,
+            [NAMESPACE, id, voter_id],
+            [direction]
+          )
+
           obj = JSON.parse(raw).with_indifferent_access
-          obj.merge votes: score
+          obj.merge votes_count: score, voter_ids: voter_ids
         end
       end
     end

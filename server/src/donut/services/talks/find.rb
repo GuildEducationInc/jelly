@@ -13,7 +13,12 @@ module Donut
           raw = redis.get key(id)
           obj = JSON.parse(raw).with_indifferent_access
           votes = redis.zscore "#{NAMESPACE}:all", id
-          success obj.merge(votes: votes)
+          voter_ids = redis.smembers "#{NAMESPACE}:#{id}:voter_ids"
+
+          success obj.merge(
+            votes_count: votes,
+            voter_ids: voter_ids
+          )
         end
 
         private
