@@ -8,6 +8,7 @@ import IosThumbsUp from "react-ionicons/lib/IosThumbsUp";
 import { Mutation } from "react-apollo";
 import { loader } from "graphql.macro";
 import { connect } from "react-redux";
+import moment from "moment";
 
 const talkVoteMutation = loader("../../graphql/mutations/TalkVote.graphql");
 
@@ -16,7 +17,15 @@ const mapState = ({ session: { user } }) => {
 };
 
 const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
-  const { id, votesCount, topic, gid, description, voterIds } = talk;
+  const {
+    id,
+    votesCount,
+    topic,
+    gid,
+    description,
+    voterIds,
+    scheduledFor
+  } = talk;
   const voters = new Set(voterIds);
 
   return (
@@ -51,6 +60,7 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
                           gid,
                           topic,
                           description,
+                          scheduledFor,
                           votesCount: voters.has(currentUserId)
                             ? votesCount - 1
                             : votesCount + 1,
@@ -73,6 +83,9 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
           </Mutation>
         </Col>
         <Col xs={6} className="d-flex flex-column justify-content-center">
+          {scheduledFor && (
+            <small className="mb-1">{moment(scheduledFor).format("lll")}</small>
+          )}
           <h6 className="my-0 mb-1 font-weight-bold">{topic}</h6>
           <small className="text-muted">{description}</small>
         </Col>

@@ -30,6 +30,15 @@ const Home = ({ user: { profilePictureUrl } }) => {
                 </a>{" "}
                 or <a href="slack://user?team=T0G6T8SLC&id=UH49NMU6M">@Trey</a>
               </small>
+              <br />
+              <small>
+                <a
+                  href="https://drive.google.com/open?id=1llxJGGfNBQlJyCQbNWGKMwhSbf3J0Coj"
+                  target="new"
+                >
+                  View Archive
+                </a>
+              </small>
             </div>
           </Col>
         </Row>

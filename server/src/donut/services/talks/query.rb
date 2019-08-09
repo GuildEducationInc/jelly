@@ -29,7 +29,8 @@ module Donut
             obj = JSON.parse(record).with_indifferent_access
             obj.merge(
               votes_count: hash[key obj[:id]],
-              voter_ids: redis.smembers("#{key obj[:id]}:voter_ids")
+              voter_ids: redis.smembers("#{key obj[:id]}:voter_ids"),
+              scheduled_for: redis.get("#{key obj[:id]}:scheduled_for")
             )
           end
 

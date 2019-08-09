@@ -56,6 +56,7 @@ export default () => {
                     topic: topicInput.value,
                     description: descriptionInput.value,
                     votesCount: 0,
+                    scheduledFor: null,
                     voterIds: [],
                     __typename: "Talk"
                   },

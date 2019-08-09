@@ -5,4 +5,5 @@ fragment TalkFragment on Talk {
   votesCount
   description
   voterIds
+  scheduledFor
 }
