@@ -36,7 +36,16 @@ const Home = ({ user: { profilePictureUrl } }) => {
                   href="https://drive.google.com/open?id=1llxJGGfNBQlJyCQbNWGKMwhSbf3J0Coj"
                   target="new"
                 >
-                  View Archive
+                  Archive
+                </a>
+              </small>
+              <br />
+              <small>
+                <a
+                  href="https://guild-education.atlassian.net/wiki/spaces/PROD/pages/260866785/Tech+Talks"
+                  target="new"
+                >
+                  Overview
                 </a>
               </small>
             </div>
