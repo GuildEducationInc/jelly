@@ -64,7 +64,15 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
                           votesCount: voters.has(currentUserId)
                             ? votesCount - 1
                             : votesCount + 1,
-                          voterIds: [...voterIds, currentUserId],
+                          voterIds: voters.has(currentUserId)
+                            ? [
+                                (() => {
+                                  const ids = new Set(voterIds);
+                                  ids.delete(currentUserId);
+                                  return new Array(ids);
+                                })()
+                              ]
+                            : [...voterIds, currentUserId],
                           __typename: "Talk"
                         },
                         __typename: "TalkVotePayload"
