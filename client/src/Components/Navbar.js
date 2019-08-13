@@ -5,7 +5,7 @@ import logo from "../images/logo.svg";
 import Container from "react-bootstrap/Container";
 
 export default ({ profilePictureUrl }) => (
-  <Navbar bg="white" expand="lg" className="shadow-sm">
+  <Navbar bg="white" expand="lg" className="shadow-sm" fixed="top">
     <Container>
       <Navbar.Brand href="#" className="mr-auto">
         <img

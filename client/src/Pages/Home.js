@@ -15,7 +15,7 @@ const Home = ({ user: { profilePictureUrl } }) => {
       <Navbar profilePictureUrl={profilePictureUrl} />
       <Container className="pt-4">
         <Row>
-          <Col xs={8}>
+          <Col md={8} className="pb-3">
             <Talks />
           </Col>
           <Col>
