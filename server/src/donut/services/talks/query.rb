@@ -2,6 +2,7 @@
 
 require 'active_support/core_ext/hash'
 require_relative '../base'
+require_relative '../talks'
 
 module Donut
   module Services

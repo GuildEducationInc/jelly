@@ -1,0 +1,15 @@
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
+
+require_relative './src/donut/services/talks/query'
+
+task :backup do
+  service = ::Donut::Services::Talks::Query
+  result = service.call
+  talks = result.value
+
+  # mega hack, just log them :)
+  puts talks.to_json
+end
