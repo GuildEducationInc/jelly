@@ -10,8 +10,10 @@ module Donut
         def call(request)
           header = request.env['HTTP_AUTHORIZATION']
           return unless header.present?
+
           type, token = header.split ' '
           return unless type == 'Bearer' && token.present?
+
           services[:find].call(auth_token: token).value
         end
 
@@ -26,4 +28,3 @@ module Donut
     end
   end
 end
-

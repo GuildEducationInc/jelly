@@ -14,6 +14,7 @@ module Donut
 
         def scheduled_for
           return nil unless object[:scheduled_for].present?
+
           Time.parse object[:scheduled_for]
         end
       end
