@@ -10,7 +10,7 @@ module Donut
         class Verify < ::Donut::Services::Base
           class InvalidDomainError < StandardError; end
 
-          CLIENT_ID = '715743042136-s85bpps3q5jhhv92oe1f5vu8ona3r35n.apps.googleusercontent.com'
+          CLIENT_ID = '715743042136-s85bpps3q5jhhv92oe1f5vu8ona3r35n.apps.googleusercontent.com' # rubocop:disable Metrics/LineLength
           DOMAIN = 'guildeducation.com'
 
           def call(token)

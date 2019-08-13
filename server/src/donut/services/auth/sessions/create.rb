@@ -14,7 +14,10 @@ module Donut
             google_result = services[:google_verify].call google_id_token
             return failure(google_result.value) if google_result.failure?
 
-            upsert = services[:upsert_user].call google_profile: google_result.value
+            upsert = services[:upsert_user].call(
+              google_profile: google_result.value
+            )
+
             return failure(upsert.value) if upsert.failure?
 
             user = upsert.value

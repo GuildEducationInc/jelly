@@ -23,8 +23,9 @@ module Donut
     end
 
     options '/graphql' do
+      resp_headers = 'Authorization, Content-Type'
       response.headers['Allow'] = 'POST, OPTIONS'
-      response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
+      response.headers['Access-Control-Allow-Headers'] = resp_headers
       response.headers['Access-Control-Allow-Origin'] = '*'
       200
     end

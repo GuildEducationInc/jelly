@@ -15,8 +15,12 @@ module Donut
         field :errors, [String], null: false
 
         def resolve(google_id_token:)
-          result = services[:create_session].call google_id_token: google_id_token
+          result = services[:create_session].call(
+            google_id_token: google_id_token
+          )
+
           val = result.value
+
           return { errors: val } if result.failure?
 
           { errors: [], user: val[:user], token: val[:token] }
