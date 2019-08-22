@@ -31,7 +31,8 @@ module Donut
             obj.merge(
               votes_count: hash[key obj[:id]],
               voter_ids: redis.smembers("#{key obj[:id]}:voter_ids"),
-              scheduled_for: redis.get("#{key obj[:id]}:scheduled_for")
+              scheduled_for: redis.get("#{key obj[:id]}:scheduled_for"),
+              links: redis.smembers("#{key obj[:id]}:links") || []
             )
           end
 

@@ -6,4 +6,5 @@ fragment TalkFragment on Talk {
   description
   voterIds
   scheduledFor
+  links
 }

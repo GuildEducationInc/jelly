@@ -17,7 +17,7 @@ module Donut
         private
 
         def vote!(id, direction, voter_id)
-          raw, score, voter_ids, scheduled_for = redis.eval(
+          raw, score, voter_ids, scheduled_for, links = redis.eval(
             SCRIPT,
             [NAMESPACE, id, voter_id],
             [direction]
@@ -28,7 +28,8 @@ module Donut
           obj.merge(
             votes_count: score,
             voter_ids: voter_ids,
-            scheduled_for: scheduled_for
+            scheduled_for: scheduled_for,
+            links: links || []
           )
         end
       end

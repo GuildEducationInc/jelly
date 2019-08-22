@@ -24,7 +24,8 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
     gid,
     description,
     voterIds,
-    scheduledFor
+    scheduledFor,
+    links
   } = talk;
   const voters = new Set(voterIds);
 
@@ -61,6 +62,7 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
                           topic,
                           description,
                           scheduledFor,
+                          links,
                           votesCount: voters.has(currentUserId)
                             ? votesCount - 1
                             : votesCount + 1,
@@ -95,7 +97,12 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
             <small className="mb-1">{moment(scheduledFor).format("lll")}</small>
           )}
           <h6 className="my-0 mb-1 font-weight-bold">{topic}</h6>
-          <small className="text-muted">{description}</small>
+          <small className="text-muted mb-2">{description}</small>
+          {links.map(link => (
+            <a className="small" key={link} href={link}>
+              {link}
+            </a>
+          ))}
         </Col>
       </Row>
     </ListGroup.Item>

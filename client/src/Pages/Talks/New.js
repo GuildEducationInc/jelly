@@ -58,6 +58,7 @@ export default () => {
                     votesCount: 0,
                     scheduledFor: null,
                     voterIds: [],
+                    links: [],
                     __typename: "Talk"
                   },
                   __typename: "TalkCreatePayload"

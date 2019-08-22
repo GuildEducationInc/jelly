@@ -1,5 +1,6 @@
 local recordkey = KEYS[1] .. ':' .. KEYS[2]
 local voterskey = KEYS[1] .. ':' .. KEYS[2] .. ':voter_ids'
+local linkskey = KEYS[1] .. ':' .. KEYS[2] .. ':links'
 local sfkey = KEYS[1] .. ':' .. KEYS[2] .. ':scheduled_for'
 local allkey = KEYS[1] .. ':all'
 
@@ -25,5 +26,6 @@ local newscore = tonumber(rawnewscore)
 local record = redis.call('GET', recordkey)
 local voterids = redis.call('SMEMBERS', voterskey)
 local scheduledfor = redis.call('GET', sfkey)
+local links = redis.call('SMEMBERS', linkskey)
 
 return { record, newscore, voterids, scheduledfor }
