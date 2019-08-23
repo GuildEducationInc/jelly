@@ -48,6 +48,12 @@ const Home = ({ user: { profilePictureUrl } }) => {
                   Overview
                 </a>
               </small>
+              <br />
+              <small>
+                <a href="https://forms.gle/1qhfYqPXHJEZkVD2A" target="new">
+                  Feedback
+                </a>
+              </small>
             </div>
           </Col>
         </Row>

@@ -99,7 +99,7 @@ const ShowTalk = ({ talk, user: { id: currentUserId } }) => {
           <h6 className="my-0 mb-1 font-weight-bold">{topic}</h6>
           <small className="text-muted mb-2">{description}</small>
           {links.map(link => (
-            <a className="small" key={link} href={link}>
+            <a className="small" target="new" key={link} href={link}>
               {link}
             </a>
           ))}
