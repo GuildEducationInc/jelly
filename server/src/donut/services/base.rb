@@ -23,6 +23,10 @@ module Donut
 
       protected
 
+      def lua
+        ::Wolverine
+      end
+
       def success(value)
         Result.new true, value
       end

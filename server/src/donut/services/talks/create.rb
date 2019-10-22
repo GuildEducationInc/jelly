@@ -27,12 +27,12 @@ module Donut
             __namespace: NAMESPACE
           }
 
-          redis.multi do |txn|
+          redis.pipelined do |txn|
             txn.set "#{NAMESPACE}:#{id}", args.to_json
             txn.zadd "#{NAMESPACE}:all", votes, id
           end
 
-          args.merge votes_count: votes, voter_ids: [], links: []
+          Talks.build args
         end
 
         def services

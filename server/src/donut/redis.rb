@@ -5,9 +5,10 @@ module Donut
     include Singleton
 
     attr_reader :client
+    cattr_accessor :logger
 
     def initialize
-      @client = ::Redis.new
+      @client = ::Redis.new logger: self.class.logger
     end
   end
 end

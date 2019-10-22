@@ -1,2 +1,2 @@
-server: sh -c 'cd server && bundle exec puma --port 4567'
-client: sh -c 'cd client && yarn start --port 4568'
+server: make serve.server
+client: make serve.client

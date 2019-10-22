@@ -7,28 +7,17 @@ module Donut
   module Services
     module Talks
       class Find < ::Donut::Services::Base
-        def call(id)
-          return success(nil) unless redis.exists(key(id))
-
-          raw = redis.get key(id)
-          obj = JSON.parse(raw).with_indifferent_access
-          votes = redis.zscore "#{NAMESPACE}:all", id
-          voter_ids = redis.smembers "#{NAMESPACE}:#{id}:voter_ids"
-          scheduled_for = redis.get "#{NAMESPACE}:#{id}:scheduled_for"
-          links = redis.smembers("#{NAMESPACE}:#{id}:links") || []
-
-          success obj.merge(
-            votes_count: votes,
-            voter_ids: voter_ids,
-            scheduled_for: scheduled_for,
-            links: links
-          )
+        def call(id:)
+          find id
+        rescue StandardError => e
+          failure [e.message]
         end
 
         private
 
-        def key(id)
-          "#{NAMESPACE}:#{id}"
+        def find(id)
+          raw = lua.talks.find [NAMESPACE, id]
+          success Talks.build(*MessagePack.unpack(raw))
         end
       end
     end

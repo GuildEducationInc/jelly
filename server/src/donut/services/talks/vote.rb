@@ -6,8 +6,6 @@ module Donut
   module Services
     module Talks
       class Vote < ::Donut::Services::Base
-        SCRIPT = File.read File.join(__dir__, 'vote.lua')
-
         def call(id:, direction:, voter_id:)
           success vote!(id, direction, voter_id)
         rescue StandardError => e
@@ -17,8 +15,7 @@ module Donut
         private
 
         def vote!(id, direction, voter_id)
-          raw, score, voter_ids, scheduled_for, links = redis.eval(
-            SCRIPT,
+          raw, score, voter_ids, scheduled_for, links = lua.talks.vote(
             [NAMESPACE, id, voter_id],
             [direction]
           )

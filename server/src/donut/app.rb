@@ -2,6 +2,9 @@
 
 require_relative './graphql/schema'
 require_relative './services/users/current'
+require_relative './redis'
+
+Wolverine.config.script_path = Pathname.new File.expand_path('./lua', __dir__)
 
 module Donut
   class App < ::Sinatra::Base
@@ -9,6 +12,7 @@ module Donut
       set :server, :puma
       set :bind, '0.0.0.0'
       enable :logging
+      set :logging, Logger::DEBUG
       enable :cross_origin
     end
 
@@ -20,6 +24,9 @@ module Donut
 
     before do
       response.headers['Access-Control-Allow-Origin'] = '*'
+
+      ::Donut::Redis.logger = logger
+      ::Wolverine.config.redis = ::Donut::Redis.instance.client
     end
 
     options '/graphql' do

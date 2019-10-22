@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../base'
+require_relative './find'
 
 module Donut
   module Services
@@ -8,24 +9,27 @@ module Donut
       class Update < ::Donut::Services::Base
         def call(params = {})
           success update_talk!(params)
-        rescue StandardError => e
-          failure [e.message]
         end
 
         private
 
         def update_talk!(params)
           id = params.delete :id
-          raise "talk not found: #{id}" unless redis.exists(key(id))
+          k = key id
+          redis.watch k
 
-          prev = redis.get key(id)
+          raise "talk not found: #{id}" unless redis.exists(k)
+
+          prev = redis.get k
           obj = JSON.parse(prev).with_indifferent_access
           updated = obj.merge params.compact
-          redis.set key(id).to_s, updated.to_json
-          votes = redis.zscore "#{NAMESPACE}:all", id
-          voter_ids = redis.smembers "#{key(id)}:voter_ids"
 
-          updated.merge votes_count: votes, voter_ids: voter_ids
+          result = redis.multi do |txn|
+            txn.set k.to_s, updated.to_json
+            lua.talks.find [NAMESPACE, id]
+          end
+
+          Talks.build(*MessagePack.unpack(result.last))
         end
 
         def key(id)
