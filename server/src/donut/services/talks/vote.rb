@@ -15,19 +15,8 @@ module Donut
         private
 
         def vote!(id, direction, voter_id)
-          raw, score, voter_ids, scheduled_for, links = lua.talks.vote(
-            [NAMESPACE, id, voter_id],
-            [direction]
-          )
-
-          obj = JSON.parse(raw).with_indifferent_access
-
-          obj.merge(
-            votes_count: score,
-            voter_ids: voter_ids,
-            scheduled_for: scheduled_for,
-            links: links || []
-          )
+          raw = lua.talks.vote [NAMESPACE, id, voter_id], [direction]
+          Talks.build(*raw)
         end
       end
     end

@@ -9,6 +9,12 @@ The client is a React app
 The server is a Sinatra app that uses Redis as its data store
 
 ## Local development
+### Prerequisites
+- Redis
+- Ruby 2.6.3
+- Node.js
+- Yarn
+
 ```sh
 # spin up whole stack
 git clone https://github.com/thejchap/donut.git
