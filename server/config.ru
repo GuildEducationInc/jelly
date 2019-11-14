@@ -5,6 +5,6 @@ require 'bundler'
 
 Bundler.require
 
-require './src/donut/app'
+require './src/jelly/app'
 
-run Donut::App
+run Jelly::App

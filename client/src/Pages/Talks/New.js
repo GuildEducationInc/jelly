@@ -52,7 +52,7 @@ export default () => {
                   errors: [],
                   talk: {
                     id,
-                    gid: `gid://donut/talk/${id}`,
+                    gid: `gid://jelly/talk/${id}`,
                     topic: topicInput.value,
                     description: descriptionInput.value,
                     votesCount: 0,

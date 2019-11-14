@@ -5,10 +5,10 @@ require 'bundler'
 
 Bundler.require
 
-require_relative './src/donut/services/talks/query'
+require_relative './src/jelly/services/talks/query'
 
 task :backup do
-  service = ::Donut::Services::Talks::Query
+  service = ::Jelly::Services::Talks::Query
   result = service.call
   talks = result.value
 

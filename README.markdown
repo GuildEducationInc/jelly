@@ -1,4 +1,4 @@
-# Donut
+# Jelly
 
 Submit and vote for tech talks
 
@@ -17,8 +17,8 @@ The server is a Sinatra app that uses Redis as its data store
 
 ```sh
 # spin up whole stack
-git clone https://github.com/thejchap/donut.git
-cd donut
+git clone https://github.com/thejchap/jelly.git
+cd jelly
 make
 make serve
 
