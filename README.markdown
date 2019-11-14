@@ -11,13 +11,13 @@ The server is a Sinatra app that uses Redis as its data store
 ## Local development
 ### Prerequisites
 - Redis
-- Ruby 2.6.3
+- Ruby 2.6.5
 - Node.js
 - Yarn
 
 ```sh
 # spin up whole stack
-git clone https://github.com/thejchap/jelly.git
+git clone https://github.com/GuildEducationInc/jelly.git
 cd jelly
 make
 make serve
@@ -44,3 +44,10 @@ make deploy.server
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+jelly is open-source and licensed under the [MIT License](LICENSE).
+
+Use the project's [GitHub Issues feature](https://github.com/GuildEducationInc/jelly/issues) to report bugs and make feature requests.
+
+Even better, if you're able to write code yourself to fix bugs or implement new features, [submit a pull request on GitHub](https://github.com/GuildEducationInc/jelly/pulls) which will help us move the software forward much faster.
+
