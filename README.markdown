@@ -4,9 +4,9 @@ Submit and vote for tech talks
 
 ## App
 ### Client
-The client is a React app
+The client is a React app. Nothing fancy here.
 ### Server
-The server is a Sinatra app that uses Redis as its data store
+The server is a Sinatra app that uses Redis as its data store. Most of the persistence logic is defined in Lua scripts which are executed by Redis (https://redis.io/commands/eval)
 
 ## Local development
 ### Prerequisites
